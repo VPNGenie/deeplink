@@ -9,6 +9,12 @@
   <p id="link"></p>
 
 <script>
+function base64DecodeUnicode(str) {
+  return decodeURIComponent(Array.prototype.map.call(atob(str), c => {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+}
+
 (async () => {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get('cfg'); // URL-safe Base64
@@ -19,8 +25,7 @@
   }
 
   try {
-    // Сначала decodeURIComponent, потом atob
-    const cfg = atob(decodeURIComponent(encoded));
+    const cfg = base64DecodeUnicode(decodeURIComponent(encoded));
 
     // Автоматический редирект
     window.location.href = cfg;
