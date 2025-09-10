@@ -9,28 +9,23 @@
   <p id="link"></p>
 
 <script>
-function base64DecodeUnicode(str) {
-  return decodeURIComponent(Array.prototype.map.call(atob(str), c => {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-}
-
-(async () => {
+(function() {
   const params = new URLSearchParams(window.location.search);
-  const encoded = params.get('cfg'); // URL-safe Base64
+  let cfg = params.get('cfg'); // cfg уже должен быть URL-encoded
 
-  if (!encoded) {
+  if (!cfg) {
     document.getElementById('link').textContent = "Параметр cfg не указан.";
     return;
   }
 
   try {
-    const cfg = base64DecodeUnicode(decodeURIComponent(encoded));
+    // decodeURIComponent на случай спецсимволов
+    cfg = decodeURIComponent(cfg);
 
     // Автоматический редирект
     window.location.href = cfg;
 
-    // Фоллбэк ссылка
+    // fallback ссылка
     const linkContainer = document.getElementById('link');
     const a = document.createElement('a');
     a.href = cfg;
@@ -39,9 +34,9 @@ function base64DecodeUnicode(str) {
     a.style.color = "#007bff";
     linkContainer.appendChild(a);
 
-  } catch(e) {
+  } catch (e) {
     console.error(e);
-    document.getElementById('link').textContent = "Ошибка декодирования cfg";
+    document.getElementById('link').textContent = "Ошибка редиректа cfg";
   }
 })();
 </script>
