@@ -9,17 +9,23 @@
   <p id="link"></p>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const encoded = params.get('cfg'); // cfg должен быть Base64
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const encoded = params.get('cfg'); // URL-safe Base64
 
-if(encoded){
-  try{
-    const cfg = atob(encoded); // декодируем Base64
+  if (!encoded) {
+    document.getElementById('link').textContent = "Параметр cfg не указан.";
+    return;
+  }
 
-    // редирект в приложение
+  try {
+    // Сначала decodeURIComponent, потом atob
+    const cfg = atob(decodeURIComponent(encoded));
+
+    // Автоматический редирект
     window.location.href = cfg;
 
-    // fallback ссылка
+    // Фоллбэк ссылка
     const linkContainer = document.getElementById('link');
     const a = document.createElement('a');
     a.href = cfg;
@@ -28,13 +34,11 @@ if(encoded){
     a.style.color = "#007bff";
     linkContainer.appendChild(a);
 
-  }catch(e){
-    document.getElementById('link').textContent = "Ошибка декодирования cfg";
+  } catch(e) {
     console.error(e);
+    document.getElementById('link').textContent = "Ошибка декодирования cfg";
   }
-}else{
-  document.getElementById('link').textContent = "Параметр cfg не указан.";
-}
+})();
 </script>
 </body>
 </html>
