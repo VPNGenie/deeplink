@@ -2,11 +2,70 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Deep Link Redirect</title>
+<title>VPNGenie Deep Link</title>
+<style>
+  /* Сброс стандартных стилей */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
+  a.button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background: #ff416c;
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  a.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+</style>
 </head>
 <body>
-<h2>Если автоматический редирект не сработал, используйте ссылку ниже:</h2>
-<p id="link"></p>
+  <h1>VPNGenie</h1>
+  <p>Если автоматический переход не сработал, нажмите на кнопку ниже:</p>
+  <p id="link"></p>
 
 <script>
 // Декодирование Base64 с поддержкой UTF-8
@@ -34,13 +93,12 @@ function decodeBase64Utf8(base64) {
     // Автоматический редирект в приложение
     window.location.href = cfg;
 
-    // Фоллбэк ссылка
+    // Фоллбэк кнопка
     const linkContainer = document.getElementById('link');
     const a = document.createElement('a');
     a.href = cfg;
-    a.textContent = "Открыть вручную";
-    a.style.fontSize = "20px";
-    a.style.color = "#007bff";
+    a.textContent = "Открыть VPNGenie";
+    a.className = "button";
     linkContainer.appendChild(a);
 
   } catch (e) {
@@ -49,5 +107,9 @@ function decodeBase64Utf8(base64) {
   }
 })();
 </script>
+
+<footer>
+  &copy; 2025 VPNGenie
+</footer>
 </body>
 </html>
