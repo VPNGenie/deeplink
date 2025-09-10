@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Deep Link Redirect</title>
+<meta charset="UTF-8">
+<title>Deep Link Redirect</title>
 </head>
 <body>
-  <h2>Если переход не сработал, нажмите на ссылку:</h2>
-  <p id="link"></p>
+<h2>Если автоматический редирект не сработал, используйте ссылку ниже:</h2>
+<p id="link"></p>
 
 <script>
+// Декодирование Base64 с поддержкой UTF-8
+function decodeBase64Utf8(base64) {
+  const bytes = atob(base64);
+  let result = '';
+  for (let i = 0; i < bytes.length; i++) {
+    result += String.fromCharCode(bytes.charCodeAt(i));
+  }
+  return decodeURIComponent(escape(result));
+}
+
 (function() {
   const params = new URLSearchParams(window.location.search);
-  let cfg = params.get('cfg'); // cfg уже должен быть URL-encoded
+  const encoded = params.get('cfg'); // Base64, URL-encoded
 
-  if (!cfg) {
+  if (!encoded) {
     document.getElementById('link').textContent = "Параметр cfg не указан.";
     return;
   }
 
   try {
-    // decodeURIComponent на случай спецсимволов
-    cfg = decodeURIComponent(cfg);
+    const cfg = decodeBase64Utf8(decodeURIComponent(encoded));
 
-    // Автоматический редирект
+    // Автоматический редирект в приложение
     window.location.href = cfg;
 
-    // fallback ссылка
+    // Фоллбэк ссылка
     const linkContainer = document.getElementById('link');
     const a = document.createElement('a');
     a.href = cfg;
@@ -36,7 +45,7 @@
 
   } catch (e) {
     console.error(e);
-    document.getElementById('link').textContent = "Ошибка редиректа cfg";
+    document.getElementById('link').textContent = "Ошибка декодирования cfg";
   }
 })();
 </script>
