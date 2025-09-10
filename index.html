@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Deep Link Redirect</title>
+  <script>
+    // Получаем параметр cfg из URL
+    const params = new URLSearchParams(window.location.search);
+    const cfg = params.get('cfg');
+
+    if (cfg) {
+      // Пробуем редирект
+      window.location.href = cfg;
+    }
+  </script>
+</head>
+<body>
+  <h2>Если переход не сработал, нажмите на ссылку:</h2>
+  <p id="link"></p>
+
+  <script>
+    const linkContainer = document.getElementById('link');
+    if (cfg) {
+      const a = document.createElement('a');
+      a.href = cfg;
+      a.textContent = "Открыть ссылку";
+      a.style.fontSize = "20px";
+      a.style.color = "#007bff";
+      linkContainer.appendChild(a);
+    } else {
+      linkContainer.textContent = "Параметр cfg не указан.";
+    }
+  </script>
+</body>
+</html>
